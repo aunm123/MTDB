@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
                     Extension of FMDB by Object-C
                    DESC
 
-  s.homepage     = "http://EXAMPLE/MTDB"
+  s.homepage     = "https://github.com/aunm123/MTDB"
 
   s.license = { :type => "MIT", :file => "LICENSE" }
 
