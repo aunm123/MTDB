@@ -13,9 +13,13 @@
 		22E1A3391C49D8E500812179 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22E1A3371C49D8E500812179 /* Main.storyboard */; };
 		22E1A33B1C49D8E500812179 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22E1A33A1C49D8E500812179 /* Assets.xcassets */; };
 		22E1A33E1C49D8E500812179 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22E1A33C1C49D8E500812179 /* LaunchScreen.storyboard */; };
+		22E1A34A1C49DAA800812179 /* DBConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E1A3471C49DAA800812179 /* DBConfig.m */; };
+		22E1A34B1C49DAA800812179 /* MTDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E1A3491C49DAA800812179 /* MTDBModel.m */; };
+		71F4D2368151BFF3A119FC4E /* libPods-MTDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 299A9C2C9F64F87EA6F364C1 /* libPods-MTDB.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B87D7EF68EDD63B0C59F1D0 /* Pods-MTDB.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MTDB.release.xcconfig"; path = "Pods/Target Support Files/Pods-MTDB/Pods-MTDB.release.xcconfig"; sourceTree = "<group>"; };
 		22E1A32B1C49D8E500812179 /* MTDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MTDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E1A32F1C49D8E500812179 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		22E1A3311C49D8E500812179 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -26,6 +30,12 @@
 		22E1A33A1C49D8E500812179 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22E1A33D1C49D8E500812179 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22E1A33F1C49D8E500812179 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22E1A3461C49DAA800812179 /* DBConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBConfig.h; sourceTree = "<group>"; };
+		22E1A3471C49DAA800812179 /* DBConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBConfig.m; sourceTree = "<group>"; };
+		22E1A3481C49DAA800812179 /* MTDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTDBModel.h; sourceTree = "<group>"; };
+		22E1A3491C49DAA800812179 /* MTDBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTDBModel.m; sourceTree = "<group>"; };
+		299A9C2C9F64F87EA6F364C1 /* libPods-MTDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MTDB.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA309DC576D6B1C3C72E9C24 /* Pods-MTDB.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MTDB.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MTDB/Pods-MTDB.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71F4D2368151BFF3A119FC4E /* libPods-MTDB.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +55,8 @@
 			children = (
 				22E1A32D1C49D8E500812179 /* MTDB */,
 				22E1A32C1C49D8E500812179 /* Products */,
+				A5BC81EEF0D055E29124A394 /* Pods */,
+				75BBED8BD0176A25BED7F54F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +71,7 @@
 		22E1A32D1C49D8E500812179 /* MTDB */ = {
 			isa = PBXGroup;
 			children = (
+				22E1A3451C49DAA800812179 /* Class */,
 				22E1A3311C49D8E500812179 /* AppDelegate.h */,
 				22E1A3321C49D8E500812179 /* AppDelegate.m */,
 				22E1A3341C49D8E500812179 /* ViewController.h */,
@@ -79,6 +93,34 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		22E1A3451C49DAA800812179 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				22E1A3461C49DAA800812179 /* DBConfig.h */,
+				22E1A3471C49DAA800812179 /* DBConfig.m */,
+				22E1A3481C49DAA800812179 /* MTDBModel.h */,
+				22E1A3491C49DAA800812179 /* MTDBModel.m */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		75BBED8BD0176A25BED7F54F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				299A9C2C9F64F87EA6F364C1 /* libPods-MTDB.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A5BC81EEF0D055E29124A394 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CA309DC576D6B1C3C72E9C24 /* Pods-MTDB.debug.xcconfig */,
+				1B87D7EF68EDD63B0C59F1D0 /* Pods-MTDB.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -86,9 +128,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22E1A3421C49D8E500812179 /* Build configuration list for PBXNativeTarget "MTDB" */;
 			buildPhases = (
+				9F3AF82FA3237459F748E565 /* Check Pods Manifest.lock */,
 				22E1A3271C49D8E500812179 /* Sources */,
 				22E1A3281C49D8E500812179 /* Frameworks */,
 				22E1A3291C49D8E500812179 /* Resources */,
+				3EF76351A395C2FC8C07C047 /* Embed Pods Frameworks */,
+				21C2A18695A3D6C4F5748255 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -144,12 +189,62 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		21C2A18695A3D6C4F5748255 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MTDB/Pods-MTDB-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3EF76351A395C2FC8C07C047 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MTDB/Pods-MTDB-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9F3AF82FA3237459F748E565 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		22E1A3271C49D8E500812179 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				22E1A3361C49D8E500812179 /* ViewController.m in Sources */,
+				22E1A34B1C49DAA800812179 /* MTDBModel.m in Sources */,
+				22E1A34A1C49DAA800812179 /* DBConfig.m in Sources */,
 				22E1A3331C49D8E500812179 /* AppDelegate.m in Sources */,
 				22E1A3301C49D8E500812179 /* main.m in Sources */,
 			);
@@ -259,6 +354,7 @@
 		};
 		22E1A3431C49D8E500812179 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA309DC576D6B1C3C72E9C24 /* Pods-MTDB.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MTDB/Info.plist;
@@ -270,6 +366,7 @@
 		};
 		22E1A3441C49D8E500812179 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1B87D7EF68EDD63B0C59F1D0 /* Pods-MTDB.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MTDB/Info.plist;
@@ -298,6 +395,7 @@
 				22E1A3441C49D8E500812179 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
