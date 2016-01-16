@@ -4,9 +4,10 @@ Pod::Spec.new do |s|
 
   s.name         = "MTDB"
   s.version      = "1.0"
-  s.summary      = "Dic for FMDB"
+  s.summary      = "Extension of FMDB"
 
   s.description  = <<-DESC
+                    Extension of FMDB by Object-C
                    DESC
 
   s.homepage     = "http://EXAMPLE/MTDB"
