@@ -7,7 +7,6 @@
 //
 
 #import "DBConfig.h"
-#import "config.h"
 
 static DBConfig *db=nil;
 @implementation DBConfig

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MTDBModel.h"
-#import "GlobalConfig.h"
+#import <FMDB/FMDB.h>
 
 #define DocumentPath NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]
 

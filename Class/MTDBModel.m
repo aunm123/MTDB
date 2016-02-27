@@ -7,7 +7,6 @@
 //
 
 #import "MTDBModel.h"
-#import "DBConfig.h"
 
 @interface MTDBModel (){
     NSString *limitStr;

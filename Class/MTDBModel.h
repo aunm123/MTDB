@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MTClassAdditional.h"
+#import "DBConfig.h"
 
 @interface MTDBModel : NSObject
 @property (nonatomic,strong)NSString *tableName;
