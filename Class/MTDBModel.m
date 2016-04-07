@@ -34,8 +34,8 @@
         }
         [keyset close];
         mo.keys=[NSArray arrayWithArray:tempArray];
-        mo.pageSize=15;
-        [mo setLimit:15];
+        mo.pageSize=999;//默认每页999条
+        [mo setLimit:mo.pageSize];
     }];
     return mo;
 }
@@ -79,7 +79,56 @@
     }
 }
 
+-(NSString*)getOrderByStrByDic:(NSDictionary*)orderDic{
+    NSString *orderByStr=@"";
+    if (orderDic) {
+        NSString *order=[self SplicingDic:orderDic Format:@" [%@] %@ ," LastWord:1];
+        orderByStr=[NSString stringWithFormat:@" ORDER BY %@",order];
+    }
+    return orderByStr;
+}
+-(NSString*)getAndStrByDic:(NSDictionary*)andDic{
+    NSString *andStr=@"";
+    if (andDic) {
+        andStr=[self SplicingDic:andDic Format:@" %@ = '%@' AND" LastWord:3];
+    }
+    return andStr;
+}
+-(NSString*)getOrStrByDic:(NSDictionary*)orDic{
+    NSString *orStr=@"";
+    if (orDic) {
+        orStr=[self SplicingDic:orDic Format:@" %@ = '%@' OR" LastWord:2];
+    }
+    return orStr;
+}
+-(NSString*)getWhereBy:(NSString*)andStr AndOrStr:(NSString*)orStr{
+    NSString *whereStr=@"";
+    if (![andStr isEqualToString:@""]||![orStr isEqualToString:@""]) {
+        if (![andStr isEqualToString:@""]&&![orStr isEqualToString:@""]) {
+            whereStr=[NSString stringWithFormat:@" where %@ OR %@",andStr,orStr];
+        }else if (![andStr isEqualToString:@""]){
+            whereStr=[NSString stringWithFormat:@" where %@",andStr];
+        }else if (![orStr isEqualToString:@""]){
+            whereStr=[NSString stringWithFormat:@" where %@",orStr];
+        }
+    }
+    return whereStr;
+}
+
 -(NSMutableArray*)selectANDdic:(NSDictionary*)andDic ORdic:(NSDictionary*)orDic Page:(NSInteger)p PageSize:(NSInteger)ps OrderBy:(NSDictionary*)orderDic{
+    
+    NSString *andStr=[self getAndStrByDic:andDic];
+    NSString *orStr=[self getOrStrByDic:orDic];
+    NSString *orderByStr=[self getOrderByStrByDic:orderDic];
+    NSString *whereStr=[self getWhereBy:andStr AndOrStr:orStr];
+    
+    NSMutableArray *valueArray=[self selectWhereStr:whereStr Page:p PageSize:ps OrderBy:orderByStr];
+    
+    return valueArray;
+}
+
+-(NSMutableArray*)selectWhereStr:(NSString*)whereStr Page:(NSInteger)p PageSize:(NSInteger)ps OrderBy:(NSString*)orderStr{
+    
     [self setLimit:ps];
     
     FMDatabaseQueue *base=[DBConfig shareQueue].baseQueue;
@@ -88,33 +137,7 @@
         FMResultSet *set=nil;
         NSString *sql=nil;
         
-        NSString *andStr=nil;
-        NSString *orStr=nil;
-        if (andDic) {
-            andStr=[self SplicingDic:andDic Format:@" %@ = '%@' AND" LastWord:3];
-        }
-        if (orDic) {
-            orStr=[self SplicingDic:orDic Format:@" %@ = '%@' OR" LastWord:2];
-        }
-        
-        NSString *whereStr=@"";
-        if (andStr||orDic) {
-            if (andStr&&orDic) {
-                whereStr=[NSString stringWithFormat:@" where %@ OR %@",andStr,orDic];
-            }else if (andStr){
-                whereStr=[NSString stringWithFormat:@" where %@",andStr];
-            }else if (orDic){
-                whereStr=[NSString stringWithFormat:@" where %@",orDic];
-            }
-        }
-        
-        NSString *orderByStr=@"";
-        if (orderDic) {
-            NSString *order=[self SplicingDic:orderDic Format:@" [%@] %@ ," LastWord:1];
-            orderByStr=[NSString stringWithFormat:@" ORDER BY %@",order];
-        }
-        
-        sql=[NSString stringWithFormat:@"select * from `%@` %@ %@",self.tableName,whereStr,orderByStr];
+        sql=[NSString stringWithFormat:@"select * from `%@` %@ %@",self.tableName,checkStr(whereStr),checkStr(orderStr)];
         
         if (p>=0) {
             NSString *temp=[limitStr stringByReplacingOccurrencesOfString:@"page" withString:[NSString stringWithFormat:@" %d ",(int)p]];
@@ -127,7 +150,16 @@
                 for (int i=0;i<set.columnCount;i++) {
                     id temp = [set objectForColumnIndex:i];
                     NSString *rea = [NSString stringWithFormat:@"%@",temp];
-                    [teDic setObject:rea forKey:[set columnNameForIndex:i]];
+                    
+                    NSData *tempData=[rea dataUsingEncoding:NSUTF8StringEncoding];
+                    NSError *error;
+                    id tempjsonOb = [NSJSONSerialization JSONObjectWithData:tempData options:NSJSONReadingMutableLeaves error:&error];
+                    if (error) {
+                        
+                        [teDic setObject:rea forKey:[set columnNameForIndex:i]];
+                    }else{
+                        [teDic setObject:tempjsonOb forKey:[set columnNameForIndex:i]];
+                    }
                 }
                 [valueArray addObject:teDic];
             }
@@ -138,36 +170,16 @@
     return valueArray;
 }
 
--(NSMutableArray*)selectWhere:(NSString*)str OrderBy:(NSDictionary*)orderDic{
-    NSString *orderByStr=@"";
-    if (orderDic) {
-        NSString *order=[self SplicingDic:orderDic Format:@" [%@] %@ ," LastWord:1];
-        orderByStr=[NSString stringWithFormat:@" ORDER BY %@",order];
-    }
-
-    NSString *sql;
-    if (str) {
-        sql=[NSString stringWithFormat:@"select * from `%@` where %@ %@",self.tableName,str,orderByStr];
-    }else{
-        sql=[NSString stringWithFormat:@"select * from `%@` %@",self.tableName,orderByStr];
-    }
-    FMDatabaseQueue *base=[DBConfig shareQueue].baseQueue;
-    NSMutableArray *valueArray=[[NSMutableArray alloc]init];
+-(NSMutableArray*)selectWhere:(NSString*)str OrderBy:(NSDictionary*)orderDic Page:(int)p{
+    NSString *orderByStr=[self getOrderByStrByDic:orderDic];
     
-    [base inDatabase:^(FMDatabase *db) {
-        FMResultSet *set=nil;
-        set=[db executeQuery:sql];
-        if (set) {
-            while (set.next) {
-                NSMutableDictionary *teDic=[[NSMutableDictionary alloc]init];
-                for (int i=0;i<set.columnCount;i++) {
-                    [teDic setObject:[set objectForColumnIndex:i] forKey:[set columnNameForIndex:i]];
-                }
-                [valueArray addObject:teDic];
-            }
-            [set close];
-        }
-    }];
+    NSString *whereStr=@"";
+    if (str) {
+        whereStr=[NSString stringWithFormat:@" where %@",checkStr(str)];
+    }
+    
+    NSMutableArray *valueArray=[self selectWhereStr:whereStr Page:p PageSize:self.pageSize OrderBy:orderByStr];
+    
     return valueArray;
 }
 
@@ -207,10 +219,24 @@
             NSString *ks=@"";
             for (int i=0;i<dic.count;i++) {
                 NSString *key=dic.allKeys[i];
-                NSString *value=dic[key];
+                id temp=dic[key];
+                NSString *value;
                 if (![self isContent:key]) {
                     continue;
                 }
+                //字段是否不是字符串（不是，则用json保持成数组）
+                if ([temp isKindOfClass:[NSString class]]||[temp isKindOfClass:[NSNumber class]]) {
+                    value = temp;
+                }else{
+                    NSError *error;
+                    NSData *jsondata = [NSJSONSerialization dataWithJSONObject:temp options:NSJSONWritingPrettyPrinted error:&error];
+                    if (error) {
+                        continue;
+                    }
+                    value = [[NSString alloc]initWithData:jsondata encoding:NSUTF8StringEncoding];
+                }
+                
+                
                 ks=[ks stringByAppendingFormat:@"'%@' ,",key];
                 vs=[vs stringByAppendingFormat:@"'%@' ,",value];
             }
@@ -311,8 +337,22 @@
                 string=@"";
             }
             if (![trueDic[TK] isKindOfClass:[NSNull class]]) {
+                id temp = trueDic[TK];
+                NSString *value;
+                //字段是否不是字符串（不是，则用json保持成数组）
+                if ([temp isKindOfClass:[NSString class]]||[temp isKindOfClass:[NSNumber class]]) {
+                    value = temp;
+                }else{
+                    NSError *error;
+                    NSData *jsondata = [NSJSONSerialization dataWithJSONObject:temp options:NSJSONWritingPrettyPrinted error:&error];
+                    if (error) {
+                        continue;
+                    }
+                    value = [[NSString alloc]initWithData:jsondata encoding:NSUTF8StringEncoding];
+                }
+                
                 string=[string stringByAppendingFormat:format,TK,
-                        trueDic[TK]];
+                        value];
             }
         }
         if (string) {

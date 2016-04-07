@@ -11,6 +11,7 @@
 #import <FMDB/FMDB.h>
 
 #define DocumentPath NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]
+#define checkStr(str) [str isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",str]:([str isKindOfClass:[NSNull class]]||str==nil?@"":str)
 
 @interface DBConfig : NSObject
 @property (nonatomic,strong)NSString *DBName;

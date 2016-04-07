@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "DBConfig.h"
 
+
 @interface MTDBModel : NSObject
 @property (nonatomic,strong)NSString *tableName;
 @property (nonatomic,strong)NSArray *keys;
@@ -24,9 +25,11 @@
 -(NSMutableArray*)selectOR:(NSDictionary*)dic page:(NSInteger)p;
 -(NSMutableArray*)selectAND:(NSDictionary*)dic page:(NSInteger)p;
 -(NSMutableArray*)selectAND:(NSDictionary*)dic page:(NSInteger)p orderBy:(NSDictionary*)orderDic;
--(NSMutableArray*)selectWhere:(NSString*)str OrderBy:(NSDictionary*)orderDic;
+-(NSMutableArray*)selectWhere:(NSString*)str OrderBy:(NSDictionary*)orderDic Page:(int)p;
+
 
 -(NSMutableArray*)selectANDdic:(NSDictionary*)andDic ORdic:(NSDictionary*)orDic Page:(NSInteger)p PageSize:(NSInteger)ps OrderBy:(NSDictionary*)orderDic;
+-(NSMutableArray*)selectWhereStr:(NSString*)whereStr Page:(NSInteger)p PageSize:(NSInteger)ps OrderBy:(NSString*)orderStr;
 
 -(NSDictionary*)selectSingle:(NSDictionary*)dic;
 
