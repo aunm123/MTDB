@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
 spec.name         = 'MTDB'
-spec.version      = '0.1.0'
+spec.version      = '0.2.0'
 spec.license      = 'MIT'
 spec.summary      = 'Extension of FMDB'
 spec.homepage     = 'https://github.com/aunm123/MTDB'
