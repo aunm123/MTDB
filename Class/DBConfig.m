@@ -50,7 +50,7 @@ static DBConfig *db=nil;
     return valueArray;
 }
 
-+(void*)updataOldDB:(NSString*)olddb NewDB:(NSString*)newdb{
++(void)updataOldDB:(NSString*)olddb NewDB:(NSString*)newdb{
     FMDatabaseQueue *oldD = [[FMDatabaseQueue alloc]initWithPath:olddb];
     FMDatabaseQueue *newD = [[FMDatabaseQueue alloc]initWithPath:newdb];
     

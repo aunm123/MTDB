@@ -18,7 +18,7 @@
 @property (nonatomic,strong)FMDatabaseQueue *baseQueue;
 +(DBConfig*)allocWithDBName:(NSString*)DBP;
 +(DBConfig*)shareQueue;
-+(void*)updataOldDB:(NSString*)olddb NewDB:(NSString*)newdb;
++(void)updataOldDB:(NSString*)olddb NewDB:(NSString*)newdb;
 
 +(NSArray*)needWithAr1:(NSArray*)array1 Ar2:(NSArray*)array2;
 @end
