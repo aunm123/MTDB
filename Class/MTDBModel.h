@@ -33,7 +33,8 @@
 
 -(NSDictionary*)selectSingle:(NSDictionary*)dic;
 
--(BOOL)save:(NSDictionary*)dic;
+-(void)saveWithArray:(NSArray*)array;
+-(BOOL)saveWithDic:(NSDictionary*)dic;
 -(BOOL)deleteWithDic:(NSDictionary*)dic;
 -(void)cleanUp;
 -(void)setLimit:(NSInteger)PageSize;

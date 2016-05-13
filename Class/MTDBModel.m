@@ -34,7 +34,7 @@
         }
         [keyset close];
         mo.keys=[NSArray arrayWithArray:tempArray];
-        mo.pageSize=999;//默认每页999条
+        mo.pageSize=9999;//默认每页999条
         [mo setLimit:mo.pageSize];
     }];
     return mo;
@@ -183,7 +183,76 @@
     return valueArray;
 }
 
--(BOOL)save:(NSDictionary*)dic{
+-(void)saveWithArray:(NSArray*)array{
+    if (array.count<=0) {
+        return ;
+    }
+    FMDatabaseQueue *base=[DBConfig shareQueue].baseQueue;
+    [base inDatabase:^(FMDatabase *db) {
+        FMResultSet *set=nil;
+        for (NSDictionary *dic in array) {
+            NSString *dataPK=[dic objectForKey:self.indexKey];
+            BOOL updata=NO;
+            if (dataPK) {
+                NSString *selectID=[NSString stringWithFormat:@"select * from %@ where %@ = '%@' ",self.tableName,self.indexKey,dataPK];
+                set=[db executeQuery:selectID];
+                while ([set next]) {
+                    updata=YES;
+                }
+                [set close];
+            }else{
+                updata=NO;
+            }
+            
+            if (updata) {
+                NSString *str=[self SplicingDic:dic Format:@" [%@] = '%@' ," LastWord:1];
+                if (!str) {
+                    str=@"";
+                }
+                if ([self checkhasTime:dic]) {
+                    str =[str stringByAppendingString:@", 'time' = (datetime('now','localtime')) "];
+                }
+                NSString *sql=[NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@ = '%@'",self.tableName,str,self.indexKey,dataPK];
+                [db executeUpdate:sql];
+            }else{
+                NSString *vs=@"";
+                NSString *ks=@"";
+                for (int i=0;i<dic.count;i++) {
+                    NSString *key=dic.allKeys[i];
+                    id temp=dic[key];
+                    NSString *value;
+                    if (![self isContent:key]) {
+                        continue;
+                    }
+                    //字段是否不是字符串（不是，则用json保持成数组）
+                    if ([temp isKindOfClass:[NSString class]]||[temp isKindOfClass:[NSNumber class]]) {
+                        value = temp;
+                    }else{
+                        NSError *error;
+                        NSData *jsondata = [NSJSONSerialization dataWithJSONObject:temp options:NSJSONWritingPrettyPrinted error:&error];
+                        if (error) {
+                            continue;
+                        }
+                        value = [[NSString alloc]initWithData:jsondata encoding:NSUTF8StringEncoding];
+                    }
+                    
+                    
+                    ks=[ks stringByAppendingFormat:@"'%@' ,",key];
+                    vs=[vs stringByAppendingFormat:@"'%@' ,",value];
+                }
+                if (ks.length>0) {
+                    ks=[ks substringToIndex:ks.length-1];
+                    vs=[vs substringToIndex:vs.length-1];
+                }
+                NSString *sql=[NSString stringWithFormat:@"INSERT INTO '%@' (%@) VALUES (%@)",self.tableName,ks,vs];
+                [db executeUpdate:sql];
+            }
+        }
+    }];
+    return ;
+}
+
+-(BOOL)saveWithDic:(NSDictionary*)dic{
     if (!dic) {
         return NO;
     }
