@@ -50,7 +50,7 @@ static DBConfig *db=nil;
     return valueArray;
 }
 
-+(void)updataOldDB:(NSString*)olddb NewDB:(NSString*)newdb{
++(BOOL)updataOldDB:(NSString*)olddb NewDB:(NSString*)newdb{
     FMDatabaseQueue *oldD = [[FMDatabaseQueue alloc]initWithPath:olddb];
     FMDatabaseQueue *newD = [[FMDatabaseQueue alloc]initWithPath:newdb];
     
@@ -85,6 +85,8 @@ static DBConfig *db=nil;
     }
     //删除临时数据库
     [fm removeItemAtPath:newdb error:nil];
+    
+    return YES;
 }
 
 +(NSArray*)needWithAr1:(NSArray*)array1 Ar2:(NSArray*)array2{
